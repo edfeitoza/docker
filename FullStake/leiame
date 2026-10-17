@@ -1,3 +1,19 @@
 CONTAINER - PostgreSQL
-    PgAdmin
-CONTAINER - Node
+
+BAIXANDO A IMAGEM POSTSQL
+docker pull postgres:18.4
+
+CRIANDO O DOCKER POSTGRES
+docker run -d --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=123456 -v postgres-data:/var/lib/18/postgresql
+
+BAIXANDO A IMAGEM DO PGADMIN
+docker pull dpage/pgadmin4
+
+CRIANDO O DOCKER PGADMIN
+docker run -d --name pgadmin -p 4000:80 -e PGADMIN_DEFAULT_EMAIL=admin@email.com -e PGADMIN_DEFAULT_PASSWORD=123456 
+
+CRIANDO AS REDES DOS CONTAINERs
+docker network create rede-app
+
+ADICIONANDO OS CONTAINERs NA REDE CRIADA
+docker network connect rede-app <id container>
