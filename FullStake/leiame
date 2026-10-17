@@ -17,3 +17,13 @@ docker network create rede-app
 
 ADICIONANDO OS CONTAINERs NA REDE CRIADA
 docker network connect rede-app <id container>
+
+CRIANDO OS CONTAINERs
+
+UTILIZANDO O DOCKERFILE
+
+COMANDOS CONTAINERs
+
+docker build -t api
+
+docker run --name api -p 3000:3000 -v ${PWD}:/app api
