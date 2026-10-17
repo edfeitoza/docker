@@ -326,3 +326,7 @@ REALIZANDO O PRIMEIRO COMMIT NO GIT
 ```bash
 sudo git commit -m "criacao do repositorio"
 ```
+CLONANDO UM REPOSITORIO GIT
+```bash
+sudo git clone <patha do git>.git
+```
