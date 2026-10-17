@@ -1,0 +1,4 @@
+services:
+    banco:
+        image: postgres
+        container_name: db-prd
