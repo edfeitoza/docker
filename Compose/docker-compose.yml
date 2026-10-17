@@ -1,4 +1,8 @@
 services:
-    banco:
-        image: postgres
-        container_name: db-prd
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD: 123
+      - POSTGRES_USER: admin
+      - POSTGRES_DB: mydb
