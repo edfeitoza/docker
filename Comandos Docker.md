@@ -73,7 +73,7 @@ docker restart <id>
 ```
 RENOMEANDO O CONTAINER
 ```bash
-docker rename <id container/nome> <novo nome>
+docker rename <id container/nome> <novo nome> 
 ```
 INSPECIONANDO UM DOCKER, CHECANDO A VARIAVEL DE AMBIENTE
 ```bash
