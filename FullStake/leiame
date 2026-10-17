@@ -27,3 +27,14 @@ COMANDOS CONTAINERs
 docker build -t api .
 
 docker run --name api -p 3000:3000 -v ${PWD}:/app api
+
+INSTALANDO O PRISMA
+
+npm install prisma @types/pg --save-dev
+
+npm install @prisma/client @prisma/adapter-pg pg dotenv
+
+INICIALIZANDO O prisma
+
+npx prisma init
+
