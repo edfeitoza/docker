@@ -3,6 +3,14 @@ services:
     container_name: postgres
     image: postgres
     environment:
-      - POSTGRES_PASSWORD: 123
-      - POSTGRES_USER: admin
-      - POSTGRES_DB: mydb
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=mydb
+  pgAdmin:
+    container_name: pgAdmin
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@email.com
+      - PGADMIN_DEFAULT_PASSWORD=123456
+    ports:
+      - "8080:80"
