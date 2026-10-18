@@ -1,0 +1,20 @@
+services:
+  wordpress:
+    container_name: wordpress
+    image: wordpress
+    ports:
+      - "8080:80"
+    volumes:
+      - wp_data:/var/www/html
+    env_file:
+      - ./env/wordpress.env
+  mysql:
+    container_name: mysql_container
+    image: mysql
+    volumes:
+      - mysql_data:/var/lib/mysql
+    env_file:
+      - ./env/mysql.env
+volumes:
+  wp_data:
+  mysql_data:
