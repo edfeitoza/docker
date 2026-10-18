@@ -1,8 +1,9 @@
 CONTAINER - PostgreSQL
 
 BAIXANDO A IMAGEM POSTSQL
+```bash
 docker pull postgres:18.4
-
+```
 CRIANDO O DOCKER POSTGRES
 docker run -d --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=123456 -v postgres-data:/var/lib/18/postgresql
 
