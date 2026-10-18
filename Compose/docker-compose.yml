@@ -2,15 +2,28 @@ services:
   postgres:
     container_name: postgres
     image: postgres
-    environment:
-      - POSTGRES_PASSWORD=123456
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=mydb
+    volumes:
+      - pg_data:/var/lib/postgresql/18/docker
+    env_file:
+      - ./env/postgres.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d mydb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
   pgAdmin:
     container_name: pgAdmin
     image: dpage/pgadmin4
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@email.com
-      - PGADMIN_DEFAULT_PASSWORD=123456
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    env_file:
+      - ./env/pgadmin.env
+    depends_on:
+      postgres:
+        condition: service_healthy
     ports:
       - "8080:80"
+volumes:
+  pg_data:
+  pgadmin_data:
