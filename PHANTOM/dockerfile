@@ -2,3 +2,6 @@ FROM php:8.2-cli
 COPY . /usr/src/myapp
 WORKDIR /usr/src/myapp
 CMD [ "php", "./info.php" ]
+
+#docker build -t my-php-app .
+#sudo docker run -it --rm --name myapp-php -v "$PWD":/usr/src/myapp -w /usr/src/myapp php:8.2-cli php your-script.php
