@@ -26,7 +26,10 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - ./www:/var/www/html
+      - ./www:/var/www/html                # código das aplicações (bind no host)
+      - php_storage:/var/www/storage       # uploads, cache e arquivos das apps
+      - php_sessions:/var/lib/php/sessions # sessões PHP (usuários continuam logados)
+      - php_logs:/var/log/php              # log de erros do PHP
     depends_on:
       mysql:
         condition: service_healthy
@@ -82,5 +85,13 @@ networks:
     driver: bridge
     internal: true   # sem saída para internet e sem portas publicadas
 
+# name fixo: os volumes mantêm o mesmo nome mesmo se a pasta do projeto mudar
 volumes:
   mysql_data:
+    name: infra-web_mysql_data
+  php_storage:
+    name: infra-web_php_storage
+  php_sessions:
+    name: infra-web_php_sessions
+  php_logs:
+    name: infra-web_php_logs

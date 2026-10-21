@@ -43,7 +43,7 @@ docker compose exec mysql mysql -uapp_user -p app
 docker compose exec nginx nginx -t && docker compose exec nginx nginx -s reload
 docker network inspect infra-web_backend
 docker compose down          # para (mantém dados)
-docker compose down -v       # para e APAGA o volume mysql_data
+docker compose down -v       # ⚠️ para e APAGA TODOS os volumes (mysql + php)
 ```
 
 ## Backup / Restore
@@ -63,3 +63,51 @@ mkdir -p www/minha-app && echo '<?php echo "Olá";' > www/minha-app/index.php
 curl -s http://localhost:8080/minha-app/
 tar czf www_$(date +%F).tar.gz www/          # backup das aplicações
 ```
+
+## Persistência do PHP
+| Dado | Onde fica | Tipo | Caminho no container |
+|---|---|---|---|
+| Código das aplicações | `./www` no host | bind mount | `/var/www/html` |
+| Uploads / cache / arquivos | `infra-web_php_storage` | volume | `/var/www/storage` |
+| Sessões PHP | `infra-web_php_sessions` | volume | `/var/lib/php/sessions` |
+| Logs de erro | `infra-web_php_logs` | volume | `/var/log/php` |
+| Banco MySQL | `infra-web_mysql_data` | volume | `/var/lib/mysql` |
+
+Os dados permanecem após `down`, `up`, `restart`, `build` e reboot do host. Somente `down -v` ou `docker volume rm` apagam os volumes.
+
+```bash
+docker volume ls | grep infra-web
+docker volume inspect infra-web_php_storage          # Mountpoint no host
+docker compose exec php tail -f /var/log/php/php_errors.log
+
+# Backup de um volume
+docker run --rm -v infra-web_php_storage:/dados -v "$PWD":/backup alpine \
+  tar czf /backup/php_storage_$(date +%F).tar.gz -C /dados .
+
+# Restore
+docker run --rm -v infra-web_php_storage:/dados -v "$PWD":/backup alpine \
+  sh -c "tar xzf /backup/php_storage_AAAA-MM-DD.tar.gz -C /dados"
+```
+
+Uso no código PHP:
+```php
+$destino = '/var/www/storage/uploads/' . basename($_FILES['arquivo']['name']);
+@mkdir(dirname($destino), 0775, true);
+move_uploaded_file($_FILES['arquivo']['tmp_name'], $destino);
+```
+#################################
+#################################
+***
+#Gerar a imagem
+```bash
+sudo docker compose build --no-cache php
+```
+Gerar containeres
+```bash
+sudo docker compose up -d
+```
+Derrubar todos os containers
+```bash
+docker compose down
+```
+***
